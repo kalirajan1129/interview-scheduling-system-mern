@@ -1,18 +1,22 @@
 const nodemailer = require('nodemailer');
 
-const sendEmail = async (options) => {
+const sendEmail = async (options, emailUser, emailPass) => {
+  if (!emailUser || !emailPass) {
+    throw new Error('Email credentials missing');
+  }
+
   // Create a transporter
   const transporter = nodemailer.createTransport({
-    service: 'Gmail', // or any other service you configure
+    service: 'Gmail',
     auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS
+      user: emailUser,
+      pass: emailPass
     }
   });
 
   // Define email options
   const mailOptions = {
-    from: `InterviewHub <${process.env.EMAIL_USER}>`,
+    from: `InterviewHub <${emailUser}>`,
     to: options.email,
     subject: options.subject,
     html: options.html

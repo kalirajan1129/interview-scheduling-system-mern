@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['HR', 'INTERVIEWER'],
     default: 'HR'
+  },
+  emailConfig: {
+    user: { type: String, default: null },
+    pass: { type: String, default: null }
   }
 }, { timestamps: true });
 // before save

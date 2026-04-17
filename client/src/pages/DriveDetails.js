@@ -173,6 +173,7 @@ const DriveDetails = () => {
             <span className="flex items-center gap-1.5"><Users className="w-4 h-4 text-primary-400"/> {drive.candidates.length} Candidates</span>
             <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-primary-400"/> {drive.slots.length} Slots</span>
           </div>
+        </div>
         <div className="flex items-center gap-3 w-full md:w-auto">
           <button
             onClick={() => setShowConfigModal(true)}

@@ -3,7 +3,7 @@ import API from '../services/api';
 
 const InterviewList = () => {
   const [interviews, setInterviews] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     fetchInterviews();
   }, []);
@@ -11,21 +11,30 @@ const InterviewList = () => {
   const fetchInterviews = async () => {
     const res = await API.get('/interviews');
     setInterviews(res.data);
+    setLoading(false);
   };
-
+  if (loading) {
+    return <p>Loading...</p>;
+  }
   return (
-    <div>
-      <h2>Interviews</h2>
+    <div className="min-h-screen bg-gray-100 p-5">
+      <h1 className="text-2xl font-bold mb-4">Interviews</h1>
 
-      {interviews.map((i) => (
-        <div key={i._id} style={{ border: '1px solid #ccc', margin: '10px', padding: '10px' }}>
-          <p><strong>Candidate:</strong> {i.candidateName}</p>
-          <p><strong>Role:</strong> {i.role}</p>
-          <button onClick={() => window.location.href = `/slots/${i._id}`}>
-            View Slots
-          </button>
-        </div>
-      ))}
+      <div className="grid gap-4">
+        {interviews.map((i) => (
+          <div key={i._id} className="bg-white p-4 rounded shadow">
+            <p><strong>Candidate:</strong> {i.candidateName}</p>
+            <p><strong>Role:</strong> {i.role}</p>
+
+            <button
+              className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+              onClick={() => window.location.href = `/slots/${i._id}`}
+            >
+              View Slots
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

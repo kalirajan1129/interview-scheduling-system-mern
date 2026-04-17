@@ -16,6 +16,10 @@ const InterviewList = () => {
   if (loading) {
     return <p>Loading...</p>;
   }
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    window.location.href = '/login';
+  };
   return (
     <div className="min-h-screen bg-gray-100 p-5">
       <h1 className="text-2xl font-bold mb-4">Interviews</h1>
@@ -35,6 +39,12 @@ const InterviewList = () => {
           </div>
         ))}
       </div>
+      <button
+        onClick={handleLogout}
+        className="bg-red-500 text-white px-4 py-2 rounded mb-4"
+        >
+        Logout
+      </button>
     </div>
   );
 };

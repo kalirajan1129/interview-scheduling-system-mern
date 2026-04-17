@@ -5,6 +5,7 @@ const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const interviewRoutes = require('./routes/interviewRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
 const app = express();
 
 // Connect DB
@@ -31,3 +32,5 @@ app.use('/api/users', userRoutes);
 app.use('/api/interviews', interviewRoutes);
 
 app.use('/api/bookings', bookingRoutes);
+
+app.use('/api/dashboard', dashboardRoutes);

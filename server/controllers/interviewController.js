@@ -32,7 +32,7 @@ exports.createInterview = async (req, res) => {
 
 exports.getInterviews = async (req, res) => {
   try {
-    const interviews = await Interview.find().sort({ createdAt: -1 });
+    const interviews = await Interview.find({ createdBy: req.user.id }).sort({ createdAt: -1 });
     res.json(interviews);
   } catch (error) {
     res.status(500).json({ message: error.message });

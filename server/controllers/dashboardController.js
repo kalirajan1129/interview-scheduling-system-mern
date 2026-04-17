@@ -2,7 +2,7 @@ const Interview = require('../models/Interview');
 
 exports.getDashboardStats = async (req, res) => {
   try {
-    const interviews = await Interview.find().sort({ date: 1 });
+    const interviews = await Interview.find({ createdBy: req.user.id }).sort({ date: 1 });
 
     let totalSlots = 0;
     let bookedSlots = 0;

@@ -1,23 +1,58 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import InterviewList from './pages/InterviewList';
 import SlotPage from './pages/SlotPage';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import ProtectedRoute from './components/ProtectedRoute';
+import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import CreateInterview from './pages/CreateInterview';
 
 function App() {
   return (
     <Router>
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: '#1e293b',
+            color: '#e2e8f0',
+            border: '1px solid rgba(99, 102, 241, 0.2)',
+            borderRadius: '12px',
+            fontSize: '14px',
+            fontFamily: 'Inter, system-ui, sans-serif',
+            boxShadow: '0 8px 30px rgba(0,0,0,0.3)',
+          },
+          success: {
+            iconTheme: {
+              primary: '#22c55e',
+              secondary: '#1e293b',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#ef4444',
+              secondary: '#1e293b',
+            },
+          },
+        }}
+      />
+
       <Routes>
-
+        {/* Public Routes */}
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
+        {/* Protected Routes with Layout */}
         <Route
           path="/"
           element={
             <ProtectedRoute>
-              <InterviewList />
+              <Layout>
+                <InterviewList />
+              </Layout>
             </ProtectedRoute>
           }
         />
@@ -26,17 +61,20 @@ function App() {
           path="/slots/:id"
           element={
             <ProtectedRoute>
-              <SlotPage />
+              <Layout>
+                <SlotPage />
+              </Layout>
             </ProtectedRoute>
           }
         />
-
 
         <Route
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <Layout>
+                <Dashboard />
+              </Layout>
             </ProtectedRoute>
           }
         />
@@ -45,13 +83,14 @@ function App() {
           path="/create"
           element={
             <ProtectedRoute>
-              <CreateInterview />
+              <Layout>
+                <CreateInterview />
+              </Layout>
             </ProtectedRoute>
           }
         />
       </Routes>
     </Router>
-      
   );
 }
 

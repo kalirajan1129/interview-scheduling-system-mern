@@ -45,3 +45,29 @@ exports.getAvailableSlots = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.deleteInterview = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await Interview.findByIdAndDelete(id);
+
+    res.json({ message: 'Interview deleted' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.updateInterview = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const updated = await Interview.findByIdAndUpdate(id, req.body, {
+      new: true
+    });
+
+    res.json(updated);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

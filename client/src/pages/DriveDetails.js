@@ -164,9 +164,9 @@ const DriveDetails = () => {
       </button>
 
       {/* Header Card */}
-      <div className="glass-card p-6 md:p-8 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">{drive.title}</h1>
+      <div className="glass-card p-6 md:p-8 mb-8 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+        <div className="flex-1 min-w-0 w-full">
+          <h1 className="text-2xl md:text-3xl font-bold text-white mb-2 break-words">{drive.title}</h1>
           <div className="flex flex-wrap items-center gap-4 text-sm text-surface-300">
             <span className="flex items-center gap-1.5"><Briefcase className="w-4 h-4 text-primary-400"/> {drive.role}</span>
             <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4 text-primary-400"/> {new Date(drive.date).toLocaleDateString()}</span>
@@ -174,7 +174,7 @@ const DriveDetails = () => {
             <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-primary-400"/> {drive.slots.length} Slots</span>
           </div>
         </div>
-        <div className="flex items-center gap-3 w-full md:w-auto">
+        <div className="flex items-center gap-3 w-full lg:w-auto shrink-0 mt-4 lg:mt-0">
           <button
             onClick={() => setShowConfigModal(true)}
             className="p-2.5 md:p-3 bg-surface-800/50 text-surface-400 border border-surface-700/50 rounded-xl hover:text-white hover:bg-surface-700 hover:border-surface-600 transition-all"

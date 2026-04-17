@@ -165,7 +165,7 @@ const DriveDetails = () => {
 
       {/* Header Card */}
       <div className="glass-card p-6 md:p-8 mb-8 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-        <div className="flex-1 min-w-0 w-full">
+        <div className="flex-1 min-w-0">
           <h1 className="text-2xl md:text-3xl font-bold text-white mb-2 break-words">{drive.title}</h1>
           <div className="flex flex-wrap items-center gap-4 text-sm text-surface-300">
             <span className="flex items-center gap-1.5"><Briefcase className="w-4 h-4 text-primary-400"/> {drive.role}</span>
@@ -185,7 +185,7 @@ const DriveDetails = () => {
           <button
             onClick={sendEmails}
             disabled={sending}
-            className={`btn-primary flex items-center justify-center gap-2 flex-1 md:flex-none ${sending ? 'opacity-70 cursor-not-allowed' : ''}`}
+            className={`btn-primary w-full lg:w-auto flex items-center justify-center gap-2 flex-1 md:flex-none ${sending ? 'opacity-70 cursor-not-allowed' : ''}`}
           >
             {sending ? (
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

@@ -22,6 +22,21 @@ const InterviewList = () => {
   };
   return (
     <div className="min-h-screen bg-gray-100 p-5">
+      <div className="flex gap-3 mb-4">
+      <button
+          onClick={() => window.location.href = '/dashboard'}
+          className="bg-purple-500 text-white px-4 py-2 rounded"
+      >
+          Dashboard
+      </button>
+
+      <button
+          onClick={() => window.location.href = '/create'}
+          className="bg-green-500 text-white px-4 py-2 rounded"
+      >
+        Create Interview
+      </button>
+      </div>
       <h1 className="text-2xl font-bold mb-4">Interviews</h1>
 
       <div className="grid gap-4">

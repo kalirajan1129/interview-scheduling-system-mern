@@ -3,6 +3,8 @@ import InterviewList from './pages/InterviewList';
 import SlotPage from './pages/SlotPage';
 import Login from './pages/Login';
 import ProtectedRoute from './components/ProtectedRoute';
+import Dashboard from './pages/Dashboard';
+import CreateInterview from './pages/CreateInterview';
 
 function App() {
   return (
@@ -29,8 +31,27 @@ function App() {
           }
         />
 
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/create"
+          element={
+            <ProtectedRoute>
+              <CreateInterview />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
+      
   );
 }
 

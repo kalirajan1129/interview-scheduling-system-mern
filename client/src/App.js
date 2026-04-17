@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import InterviewList from './pages/InterviewList';
-import SlotPage from './pages/SlotPage';
+import DriveDetails from './pages/DriveDetails';
+import CandidateBooking from './pages/CandidateBooking';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -26,16 +27,10 @@ function App() {
             boxShadow: '0 8px 30px rgba(0,0,0,0.3)',
           },
           success: {
-            iconTheme: {
-              primary: '#22c55e',
-              secondary: '#1e293b',
-            },
+            iconTheme: { primary: '#22c55e', secondary: '#1e293b' },
           },
           error: {
-            iconTheme: {
-              primary: '#ef4444',
-              secondary: '#1e293b',
-            },
+            iconTheme: { primary: '#ef4444', secondary: '#1e293b' },
           },
         }}
       />
@@ -44,6 +39,9 @@ function App() {
         {/* Public Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        
+        {/* Candidate Public Booking Link */}
+        <Route path="/book/:driveId/:token" element={<CandidateBooking />} />
 
         {/* Protected Routes with Layout */}
         <Route
@@ -58,11 +56,11 @@ function App() {
         />
 
         <Route
-          path="/slots/:id"
+          path="/drive/:id"
           element={
             <ProtectedRoute>
               <Layout>
-                <SlotPage />
+                <DriveDetails />
               </Layout>
             </ProtectedRoute>
           }

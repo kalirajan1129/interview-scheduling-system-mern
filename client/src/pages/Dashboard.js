@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import API from '../services/api';
-import { BarChart3, Calendar, CheckCircle2, Clock, TrendingUp, Users } from 'lucide-react';
+import { BarChart3, Calendar, CheckCircle2, Clock, TrendingUp, Users, ArrowRight, Briefcase } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
-  const [stats, setStats] = useState(null);
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchStats();
@@ -14,18 +16,18 @@ const Dashboard = () => {
   const fetchStats = async () => {
     try {
       const res = await API.get('/dashboard/stats');
-      setStats(res.data);
+      setData(res.data);
     } catch (err) {
       toast.error('Failed to load dashboard');
     }
     setLoading(false);
   };
 
-  const statCards = stats
+  const statCards = data?.stats
     ? [
         {
-          label: 'Total Interviews',
-          value: stats.totalInterviews,
+          label: 'Total Drives',
+          value: data.stats.totalDrives,
           icon: Users,
           color: 'from-primary-500 to-primary-700',
           bgColor: 'bg-primary-500/10',
@@ -34,7 +36,7 @@ const Dashboard = () => {
         },
         {
           label: 'Total Slots',
-          value: stats.totalSlots,
+          value: data.stats.totalSlots,
           icon: Calendar,
           color: 'from-blue-500 to-blue-700',
           bgColor: 'bg-blue-500/10',
@@ -43,7 +45,7 @@ const Dashboard = () => {
         },
         {
           label: 'Booked Slots',
-          value: stats.bookedSlots,
+          value: data.stats.bookedSlots,
           icon: CheckCircle2,
           color: 'from-accent-500 to-accent-700',
           bgColor: 'bg-accent-500/10',
@@ -52,7 +54,7 @@ const Dashboard = () => {
         },
         {
           label: 'Available Slots',
-          value: stats.availableSlots,
+          value: data.stats.availableSlots,
           icon: Clock,
           color: 'from-amber-500 to-orange-600',
           bgColor: 'bg-amber-500/10',
@@ -62,7 +64,6 @@ const Dashboard = () => {
       ]
     : [];
 
-  // Loading skeleton
   if (loading) {
     return (
       <div>
@@ -70,18 +71,31 @@ const Dashboard = () => {
           <div className="skeleton h-8 w-48 mb-2" />
           <div className="skeleton h-5 w-72" />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="skeleton h-36 rounded-2xl" />
           ))}
         </div>
+        <div className="skeleton h-64 rounded-2xl" />
       </div>
     );
   }
 
-  const bookingRate = stats && stats.totalSlots > 0
-    ? Math.round((stats.bookedSlots / stats.totalSlots) * 100)
-    : 0;
+  const RenderDriveItem = ({ drive }) => (
+    <div 
+      onClick={() => navigate(`/drive/${drive._id}`)}
+      className="flex items-center justify-between p-4 bg-surface-800/30 border border-surface-700/50 rounded-xl hover:bg-surface-700/30 hover:border-primary-500/50 cursor-pointer transition-all duration-300 group"
+    >
+      <div>
+        <h4 className="text-white font-semibold mb-1 group-hover:text-primary-400 transition-colors">{drive.title}</h4>
+        <div className="flex items-center gap-4 text-xs text-surface-400">
+          <span className="flex items-center gap-1"><Briefcase className="w-3 h-3"/> {drive.role}</span>
+          <span className="flex items-center gap-1"><Users className="w-3 h-3"/> {drive.bookedCandidates}/{drive.totalCandidates} Booked</span>
+        </div>
+      </div>
+      <ArrowRight className="w-5 h-5 text-surface-500 group-hover:text-primary-400 transform group-hover:translate-x-1 transition-all" />
+    </div>
+  );
 
   return (
     <div className="animate-fade-in">
@@ -114,33 +128,40 @@ const Dashboard = () => {
         ))}
       </div>
 
-      {/* Booking Rate */}
-      {stats && stats.totalSlots > 0 && (
-        <div className="glass-card p-6 md:p-8 animate-slide-up">
-          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-primary-400" />
-            Booking Rate
+      {/* Drives Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        {/* Today's Interviews */}
+        <div className="glass-card p-6 border-t-4 border-t-accent-500">
+          <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+            <CheckCircle2 className="w-5 h-5 text-accent-500" />
+            Today's Drives
           </h3>
-          <div className="flex items-center gap-6">
-            <div className="flex-1">
-              <div className="w-full bg-surface-800 rounded-full h-4 overflow-hidden">
-                <div
-                  className="h-full bg-gradient-to-r from-primary-500 to-accent-500 rounded-full transition-all duration-1000 ease-out"
-                  style={{ width: `${bookingRate}%` }}
-                />
-              </div>
-              <div className="flex justify-between mt-2 text-sm">
-                <span className="text-surface-400">{stats.bookedSlots} booked</span>
-                <span className="text-surface-400">{stats.availableSlots} available</span>
-              </div>
+          {data.todayInterviews.length === 0 ? (
+            <p className="text-surface-400 text-sm text-center py-6">No interview drives scheduled for today.</p>
+          ) : (
+            <div className="space-y-3">
+              {data.todayInterviews.map((drive) => <RenderDriveItem key={drive._id} drive={drive} />)}
             </div>
-            <div className="text-center">
-              <span className="text-4xl font-bold gradient-text">{bookingRate}%</span>
-              <p className="text-surface-500 text-xs mt-1">utilization</p>
-            </div>
-          </div>
+          )}
         </div>
-      )}
+
+        {/* Upcoming Interviews */}
+        <div className="glass-card p-6 border-t-4 border-t-primary-500">
+          <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+            <Calendar className="w-5 h-5 text-primary-500" />
+            Upcoming Drives
+          </h3>
+          {data.upcomingInterviews.length === 0 ? (
+            <p className="text-surface-400 text-sm text-center py-6">No upcoming interview drives found.</p>
+          ) : (
+            <div className="space-y-3">
+              {data.upcomingInterviews.map((drive) => <RenderDriveItem key={drive._id} drive={drive} />)}
+            </div>
+          )}
+        </div>
+
+      </div>
     </div>
   );
 };
